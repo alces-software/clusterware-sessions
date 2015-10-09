@@ -13,7 +13,7 @@ require xdg
 # VNC clients experience a 'freeze' due to a bug with handling
 # invisible mouse pointers (e.g. OSX Screen Sharing).
 echo 'XTerm*vt100.pointerMode: 0' | process_run xrdb -merge
-process_run ${cw_ROOT}/opt/tigervnc/bin/vncconfig -nowin &
+process_run "${cw_ROOT}"/opt/tigervnc/bin/vncconfig -nowin &
 # Disable gnome-screensaver
 process_run gconftool-2 --set -t boolean /apps/gnome-screensaver/idle_activation_enabled false
 
