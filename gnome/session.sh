@@ -40,8 +40,18 @@ install_geometry_script() {
   fi
 }
 
+# Create flag file to skip initial setup
+mark_initial_setup_done() {
+  local setup_file
+  setup_file="$(xdg_config_home)/gnome-initial-setup-done"
+  if [ ! -f "${setup_file}" ]; then
+    echo -n "yes" > "${setup_file}"
+  fi
+}
+
 if distro_is el7; then
   install_geometry_script
+  mark_initial_setup_done
   export GNOME_SHELL_SESSION_MODE=classic
   _GNOME_PARAMS="--session=gnome-classic"
 fi
