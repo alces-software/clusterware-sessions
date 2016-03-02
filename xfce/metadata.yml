@@ -1,0 +1,13 @@
+---
+install:
+  el7: |
+    yum -e0 -y update
+    yum -e0 -y install epel-release
+    yum -e0 -y groupinstall "Xfce"
+    yum -e0 -y install evince
+  el6: |
+    yum -e0 -y update
+    yum -e0 -y install epel-release
+    yum -e0 -y groupinstall "Xfce"
+    yum -e0 -y install evince
+    
