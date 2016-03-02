@@ -1,7 +1,7 @@
 [Desktop Entry]
-Name=Alces Clusterware GNOME desktop size management
-Comment=Ensure that GNOME sessions have sensible screen geometry.
+Name=Alces Clusterware desktop session size management
+Comment=Ensure that desktop sessions have sensible screen geometry.
 Exec=sh -c "_CLUSTERWARE_GEOMETRY_SH_"
-Terminal=False
+Terminal=false
 Type=Application
 X-GNOME-Autostart-enabled=true
