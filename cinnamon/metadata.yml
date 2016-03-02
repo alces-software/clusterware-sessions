@@ -1,0 +1,11 @@
+---
+install:
+  el7: |
+    yum -e0 -y update
+    yum -e0 -y install epel-release
+    yum -e0 -y install cinnamon* mesa-dri-drivers
+    yum -e0 -y install evince
+  el6: |
+    echo "Sorry, the Cinnamon Desktop Environment is not currently available in EL6 distributions."
+    exit 1
+    
