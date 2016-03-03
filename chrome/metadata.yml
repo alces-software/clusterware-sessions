@@ -1,0 +1,15 @@
+---
+install:
+  el7: |
+    cat <<\EOF > /etc/yum.repos.d/google-chrome.repo
+    [google-chrome]
+    name=google-chrome
+    baseurl=http://dl.google.com/linux/chrome/rpm/stable/$basearch
+    enabled=1
+    gpgcheck=1
+    gpgkey=https://dl-ssl.google.com/linux/linux_signing_key.pub
+    EOF
+    yum -e0 -y install google-chrome-stable
+  el6: |
+    echo "Sorry, the Google Chrome Browser session is not currently available in EL6 distributions as Google Chrome support for EL6 has been discontinued."
+    exit 1
