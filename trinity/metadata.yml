@@ -1,0 +1,10 @@
+---
+install:
+  el7: |
+    yum install -y http://mirror.ppa.trinitydesktop.org/trinity/trinity/rpm/el7/trinity-r14/RPMS/noarch/trinity-repo-14.0.2-1.el7.noarch.rpm
+    yum install -y ftp://ftp.pbone.net/mirror/atrpms.net/el7-x86_64/atrpms/stable/libmad-0.15.1b-4.el7.x86_64.rpm
+    yum install -y trinity-tdebase
+  el6: |
+    yum install -y http://mirror.ppa.trinitydesktop.org/trinity/trinity/rpm/el6/trinity-r14/RPMS/noarch/trinity-repo-14.0.2-1.el6.noarch.rpm
+    yum install -y ftp://ftp.pbone.net/mirror/atrpms.net/el6-x86_64/atrpms/stable/libmad-0.15.1b-4.el6.x86_64.rpm
+    yum install -y trinity-tdebase
