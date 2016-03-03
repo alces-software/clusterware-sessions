@@ -17,7 +17,9 @@ process_run "${cw_ROOT}"/opt/tigervnc/bin/vncconfig -nowin &
 process_run xsetroot -solid '#081f2e'
 
 destdir="$(xdg_config_home)/google-chrome"
-mkdir -p "${destdir}"
-touch "${destdir}/First Run"
+if [ ! -d "${destdir}" ]; then
+    mkdir -p "${destdir}"
+    touch "${destdir}/First Run"
+fi
 
 google-chrome

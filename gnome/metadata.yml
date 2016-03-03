@@ -1,7 +1,6 @@
 ---
 install:
   el7: |
-    yum -e0 -y update
     yum -e0 -y groupinstall 'X Window System' 'Fonts' 'GNOME'
     yum -e0 -y install evince
     yum -e0 -y remove gnome-packagekit
@@ -23,7 +22,6 @@ install:
     ResultActive=yes
     EOF
   el6: |
-    yum -e0 -y update
     yum -e0 -y groupinstall 'X Window System' 'Fonts' 'Desktop' 'Desktop Platform'
     yum -e0 -y install evince
     yum -e0 -y remove gnome-packagekit

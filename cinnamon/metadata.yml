@@ -1,7 +1,6 @@
 ---
 install:
   el7: |
-    yum -e0 -y update
     yum -e0 -y install epel-release
     yum -e0 -y install cinnamon* mesa-dri-drivers
     yum -e0 -y install evince
