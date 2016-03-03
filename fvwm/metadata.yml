@@ -1,0 +1,10 @@
+---
+install:
+  el7: |
+    yum -e0 -y install epel-release
+    yum -e0 -y install fvwm 
+    yum -e0 -y install evince
+  el6: |
+    yum -e0 -y install epel-release
+    yum -e0 -y install fvwm 
+    yum -e0 -y install evince
