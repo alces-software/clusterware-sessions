@@ -1,10 +1,72 @@
 ---
 install:
   el7: |
-    yum install -y http://mirror.ppa.trinitydesktop.org/trinity/trinity/rpm/el7/trinity-r14/RPMS/noarch/trinity-repo-14.0.2-1.el7.noarch.rpm
-    yum install -y ftp://ftp.pbone.net/mirror/atrpms.net/el7-x86_64/atrpms/stable/libmad-0.15.1b-4.el7.x86_64.rpm
-    yum install -y trinity-tdebase
+    require files
+    files_load_config clusterware
+    case "${cw_VERSION:-1.0.0}" in
+      1.[0-4].*)
+          echo "This session cannot be enabled as Alces Clusterware v${cw_VERSION} is too old."
+          echo "Please upgrade to Alces Clusterware v1.5.0 or higher."
+          exit 1
+          ;;
+    esac
+
+    require distro
+    if distro_is_repository_permitted trinity; then
+      if ! distro_repository_exists trinity; then
+        cat <<\REPO > "${cw_ROOT}"/etc/distro/repos/trinity.sh
+    #!/bin/bash
+    if [ "$1" == "enable" ]; then
+      yum install -y http://mirror.ppa.trinitydesktop.org/trinity/trinity/rpm/el7/trinity-r14/RPMS/noarch/trinity-repo-14.0.2-1.el7.noarch.rpm
+    else
+      yum remove -y trinity-repo
+    fi
+    REPO
+        chmod 755 "${cw_ROOT}"/etc/distro/repos/trinity.sh
+      fi
+      if distro_enable_repository trinity; then
+        yum install -y ftp://ftp.pbone.net/mirror/atrpms.net/el7-x86_64/atrpms/stable/libmad-0.15.1b-4.el7.x86_64.rpm
+        yum install -y trinity-tdebase
+      else
+        echo "Sorry, the Trinity repository is not available."
+        exit 1
+      fi
+    else
+      echo "Sorry, the Trinity repository is prohibited."
+      exit 1
+    fi
   el6: |
-    yum install -y http://mirror.ppa.trinitydesktop.org/trinity/trinity/rpm/el6/trinity-r14/RPMS/noarch/trinity-repo-14.0.2-1.el6.noarch.rpm
-    yum install -y ftp://ftp.pbone.net/mirror/atrpms.net/el6-x86_64/atrpms/stable/libmad-0.15.1b-4.el6.x86_64.rpm
-    yum install -y trinity-tdebase
+    require files
+    files_load_config clusterware
+    case "${cw_VERSION:-1.0.0}" in
+      1.[0-4].*)
+          echo "This session cannot be enabled as Alces Clusterware v${cw_VERSION} is too old."
+          echo "Please upgrade to Alces Clusterware v1.5.0 or higher."
+          exit 1
+          ;;
+    esac
+
+    require distro
+    if distro_is_repository_permitted trinity; then
+      if ! distro_repository_exists trinity; then
+        cat <<\REPO > "${cw_ROOT}"/etc/distro/repos/trinity.sh
+    #!/bin/bash
+    if [ "$1" == "enable" ]; then
+      yum install -y http://mirror.ppa.trinitydesktop.org/trinity/trinity/rpm/el6/trinity-r14/RPMS/noarch/trinity-repo-14.0.2-1.el6.noarch.rpm
+    else
+      yum remove -y trinity-repo
+    fi
+    REPO
+        chmod 755 "${cw_ROOT}"/etc/distro/repos/trinity.sh
+      fi
+      if distro_enable_repository trinity; then
+        yum install -y ftp://ftp.pbone.net/mirror/atrpms.net/el6-x86_64/atrpms/stable/libmad-0.15.1b-4.el6.x86_64.rpm
+        yum install -y trinity-tdebase
+      else
+        echo "Sorry, the Trinity repository is not available."
+        exit 1
+      fi
+    else
+      echo "Sorry, the Trinity repository is prohibited."
+      exit 1
+    fi

@@ -1,10 +1,40 @@
 ---
 install:
   el7: |
-    yum -e0 -y install epel-release
-    yum -e0 -y install icewm
-    yum -e0 -y install evince
+    require files
+    files_load_config clusterware
+    case "${cw_VERSION:-1.0.0}" in
+      1.[0-4].*)
+          echo "This session cannot be enabled as Alces Clusterware v${cw_VERSION} is too old."
+          echo "Please upgrade to Alces Clusterware v1.5.0 or higher."
+          exit 1
+          ;;
+    esac
+
+    require distro
+    if distro_enable_repository epel; then
+      yum -e0 -y install icewm
+      yum -e0 -y install evince
+    else
+      echo "Sorry, the EPEL repository is not available."
+      exit 1
+    fi
   el6: |
-    yum -e0 -y install epel-release
-    yum -e0 -y install icewm
-    yum -e0 -y install evince
+    require files
+    files_load_config clusterware
+    case "${cw_VERSION:-1.0.0}" in
+      1.[0-4].*)
+          echo "This session cannot be enabled as Alces Clusterware v${cw_VERSION} is too old."
+          echo "Please upgrade to Alces Clusterware v1.5.0 or higher."
+          exit 1
+          ;;
+    esac
+
+    require distro
+    if distro_enable_repository epel; then
+      yum -e0 -y install icewm
+      yum -e0 -y install evince
+    else
+      echo "Sorry, the EPEL repository is not available."
+      exit 1
+    fi

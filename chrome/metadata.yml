@@ -1,7 +1,24 @@
 ---
 install:
   el7: |
-    cat <<\EOF > /etc/yum.repos.d/google-chrome.repo
+    require files
+    files_load_config clusterware
+    case "${cw_VERSION:-1.0.0}" in
+      1.[0-4].*)
+          echo "This session cannot be enabled as Alces Clusterware v${cw_VERSION} is too old."
+          echo "Please upgrade to Alces Clusterware v1.5.0 or higher."
+          exit 1
+          ;;
+    esac
+
+    require distro
+    if distro_is_repository_permitted google-chrome; then
+      if ! distro_repository_exists google-chrome; then      
+        cat <<\REPO > "${cw_ROOT}"/etc/distro/repos/google-chrome.sh
+    #!/bin/bash
+    if [ "$1" == "enable" ]; then
+        if [ ! -f /etc/yum.repos.d/google-chrome.repo ]; then
+            cat <<\EOF > /etc/yum.repos.d/google-chrome.repo
     [google-chrome]
     name=google-chrome
     baseurl=http://dl.google.com/linux/chrome/rpm/stable/$basearch
@@ -9,7 +26,23 @@ install:
     gpgcheck=1
     gpgkey=https://dl-ssl.google.com/linux/linux_signing_key.pub
     EOF
-    yum -e0 -y install google-chrome-stable
+        fi
+    else
+        rm -f /etc/yum.repos.d/google-chrome.repo
+    fi
+    REPO
+        chmod 755 "${cw_ROOT}"/etc/distro/repos/google-chrome.sh
+      fi
+      if distro_enable_repository google-chrome; then
+        yum -e0 -y install google-chrome-stable
+      else
+        echo "Sorry, the Google Chrome repository is not available."
+        exit 1
+      fi
+    else
+      echo "Sorry, the Google Chrome repository is prohibited."
+      exit 1
+    fi
   el6: |
     echo "Sorry, the Google Chrome Browser session is not currently available in EL6 distributions as Google Chrome support for EL6 has been discontinued."
     exit 1
