@@ -22,4 +22,9 @@ if [ ! -d "${destdir}" ]; then
     touch "${destdir}/First Run"
 fi
 
-google-chrome
+geometry="${cw_SESSION_geometry:-1024x768}"
+window_size="$(echo "${geometry}" | sed 's/x/,/' )"
+
+google-chrome \
+    --window-position=0,0 \
+    --window-size="${window_size}"
