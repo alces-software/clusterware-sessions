@@ -16,7 +16,11 @@ process_run "${cw_ROOT}"/opt/tigervnc/bin/vncconfig -nowin &
 
 process_run xsetroot -solid '#081f2e'
 
-destdir="$(xdg_config_home)/google-chrome"
+# Use different directory for each display, otherwise cannot have multiple
+# Chrome sessions running at same time as Chrome will detect it is already
+# running and open a new tab in the existing session (see
+# http://superuser.com/a/491360).
+destdir="$(xdg_config_home)/google-chrome/session${DISPLAY}"
 if [ ! -d "${destdir}" ]; then
     mkdir -p "${destdir}"
     touch "${destdir}/First Run"
@@ -27,4 +31,5 @@ window_size="$(echo "${geometry}" | sed 's/x/,/' )"
 
 google-chrome \
     --window-position=0,0 \
-    --window-size="${window_size}"
+    --window-size="${window_size}" \
+    --user-data-dir="${destdir}"
