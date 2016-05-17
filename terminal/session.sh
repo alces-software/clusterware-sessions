@@ -19,6 +19,7 @@ xterm \
     -rightbar \
     -xrm 'xterm*pointerMode: 0' \
     -xrm 'xterm*loginShell: true' \
+    -xrm 'xterm*vt100*geometry: 143x58+3+2' \
     -xrm 'xterm*saveLines: 2000' \
     -xrm 'xterm*charClass: 33:48,35:48,37:48,43:48,45-47:48,64:48,95:48,126:48,35:48' \
     -xrm 'xterm*termName: xterm-color' \
@@ -61,5 +62,4 @@ xterm \
     -xrm '*scrollKey: true' \
     -xrm 'Scrollbar.JumpCursor: true' \
     -xrm 'xterm.*backarrowKey: true' \
-    -xrm 'xterm*VT100.translations: #override Shift Ctrl <Key>V: insert-selection(PRIMARY)' \
-    -geometry "${cw_SESSION_geometry:-1024x768}"
+    -xrm 'xterm*VT100.translations: #override Shift Ctrl <Key>V: insert-selection(PRIMARY)'

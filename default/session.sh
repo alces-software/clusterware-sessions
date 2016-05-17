@@ -13,4 +13,4 @@ require process
 echo 'XTerm*vt100.pointerMode: 0' | process_run xrdb -merge
 process_run "${cw_ROOT}"/opt/tigervnc/bin/vncconfig -nowin &
 
-xterm -geometry "${cw_SESSION_geometry:-1024x768}"
+xterm
