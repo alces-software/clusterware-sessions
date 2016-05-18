@@ -28,7 +28,7 @@ install_geometry_script() {
       destdir="$(xdg_data_home)/clusterware/bin"
       geom_sh="${destdir}/${f}"
       mkdir -p "${destdir}"
-      cp "${cw_ROOT}"/etc/sessions/cinnamon/${f} "${geom_sh}"
+      cp "${cw_ROOT}"/etc/sessions/xfce/${f} "${geom_sh}"
       chmod 755 "${geom_sh}"
   fi
 
@@ -36,7 +36,7 @@ install_geometry_script() {
   if ! xdg_config_search autostart/$f; then
       destdir="$(xdg_config_home)/autostart"
       mkdir -p "$destdir"
-      cp "${cw_ROOT}"/etc/sessions/cinnamon/${f}.tpl "${destdir}/${f}"
+      cp "${cw_ROOT}"/etc/sessions/xfce/${f}.tpl "${destdir}/${f}"
       sed -i -e "s,_CLUSTERWARE_GEOMETRY_SH_,${geom_sh},g" "${destdir}/${f}"
   fi
 }
