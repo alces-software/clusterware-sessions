@@ -5,7 +5,6 @@
 ##
 ################################################################################
 require process
-require distro
 require xdg
 
 # 'Xterm*vt100.pointerMode: 0' is to ensure that the pointer does not
@@ -41,9 +40,7 @@ install_geometry_script() {
   fi
 }
 
-if distro_is el7; then
-  install_geometry_script
-fi
+install_geometry_script
 
 if [ "$1" ]; then
   process_run "$@" &
