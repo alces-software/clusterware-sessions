@@ -19,6 +19,29 @@ destdir="$(xdg_config_home)/xfce4/xfconf/xfce-perchannel-xml"
 mkdir -p "${destdir}"
 cp /etc/xdg/xfce4/panel/default.xml "${destdir}"/xfce4-panel.xml
 
+install_geometry_script() {
+  local f destdir geom_sh
+
+  f="clusterware-geometry.sh"
+  if ! geom_sh=$(xdg_data_search clusterware/bin/$f); then
+      destdir="$(xdg_data_home)/clusterware/bin"
+      geom_sh="${destdir}/${f}"
+      mkdir -p "${destdir}"
+      cp "${cw_ROOT}"/etc/sessions/xfce/${f} "${geom_sh}"
+      chmod 755 "${geom_sh}"
+  fi
+
+  f="clusterware-geometry.desktop"
+  if ! xdg_config_search autostart/$f; then
+      destdir="$(xdg_config_home)/autostart"
+      mkdir -p "$destdir"
+      cp "${cw_ROOT}"/etc/sessions/xfce/${f}.tpl "${destdir}/${f}"
+      sed -i -e "s,_CLUSTERWARE_GEOMETRY_SH_,${geom_sh},g" "${destdir}/${f}"
+  fi
+}
+
+install_geometry_script
+
 if [ "$1" ]; then
   process_run "$@" &
 fi
