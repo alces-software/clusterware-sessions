@@ -1,0 +1,10 @@
+---
+install:
+  el7: |
+    yum -e0 -y groupinstall 'X Window System' 'Fonts' 'KDE'
+    yum -e0 -y install evince
+  el6: |
+    echo "Sorry, the KDE session is not currently available in EL6 distributions."
+    exit 1
+  ubuntu1604: |
+    apt-get install -y --no-install-recommends kubuntu-desktop evince
