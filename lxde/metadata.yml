@@ -1,0 +1,10 @@
+---
+install:
+  el7: |
+    echo "Sorry, the LXDE session is not currently available in EL7 distributions."
+    exit 1
+  el6: |
+    echo "Sorry, the LXDE session is not currently available in EL6 distributions."
+    exit 1
+  ubuntu1604: |
+    apt-get install -y --no-install-recommends lxde lxsession lxde-common evince
