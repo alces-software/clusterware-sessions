@@ -1,27 +1,38 @@
 ---
 install:
-  el7: |
-    yum -e0 -y groupinstall 'X Window System' 'Fonts' 'GNOME'
-    yum -e0 -y install evince
-    yum -e0 -y remove gnome-packagekit
-    # disable authentication prompts for admin users
-    mkdir -p /etc/polkit-1/localauthority/10-vendor.d
-    cat <<EOF > /etc/polkit-1/localauthority/10-vendor.d/20-clusterware-session-gnome.pkla
+  _: |
+    set_policies() {
+      local group=$1
+      # disable authentication prompts for admin users
+      mkdir -p /etc/polkit-1/localauthority/10-vendor.d
+      cat <<EOF > /etc/polkit-1/localauthority/10-vendor.d/20-clusterware-session-gnome.pkla
     [Alces Clusterware - disable create color managed device auth prompt for admins]
-    Identity=unix-group:wheel
+    Identity=unix-group:${group}
     Action=org.freedesktop.color-manager.create-device
     ResultAny=yes
     ResultInactive=yes
     ResultActive=yes
 
     [Alces Clusterware - disable network proxy auth prompt for admins]
-    Identity=unix-group:wheel
+    Identity=unix-group:${group}
     Action=org.freedesktop.packagekit.system-network-proxy-configure
     ResultAny=yes
     ResultInactive=yes
     ResultActive=yes
     EOF
+    }
+    if [ "${policy_group}" ]; then
+      set_policies "${policy_group}"
+    fi
+  el7: |
+    yum -e0 -y groupinstall 'X Window System' 'Fonts' 'GNOME'
+    yum -e0 -y install evince
+    yum -e0 -y remove gnome-packagekit
+    policy_group=wheel
   el6: |
     yum -e0 -y groupinstall 'X Window System' 'Fonts' 'Desktop' 'Desktop Platform'
     yum -e0 -y install evince
     yum -e0 -y remove gnome-packagekit
+  ubuntu1604: |
+    apt-get install -y --no-install-recommends gnome-core evince
+    policy_group=sudo

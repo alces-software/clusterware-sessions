@@ -20,7 +20,7 @@ process_run gconftool-2 --set -t boolean /apps/gnome-screensaver/idle_activation
 install_background_script() {
   local f destdir geom_sh
 
-  if distro_is el7; then
+  if distro_is el7 || distro_is ubuntu1604; then
     f="clusterware-background.sh"
     if ! bg_sh=$(xdg_data_search clusterware/bin/$f); then
       destdir="$(xdg_data_home)/clusterware/bin"
@@ -43,7 +43,7 @@ install_background_script() {
 install_geometry_script() {
   local f destdir geom_sh
 
-  if distro_is el7; then
+  if distro_is el7 || distro_is ubuntu1604; then
     f="clusterware-geometry.sh"
     if ! geom_sh=$(xdg_data_search clusterware/bin/$f); then
       destdir="$(xdg_data_home)/clusterware/bin"
@@ -72,7 +72,7 @@ mark_initial_setup_done() {
   fi
 }
 
-if distro_is el7; then
+if distro_is el7 || distro_is ubuntu1604; then
     install_geometry_script
     install_background_script
     mark_initial_setup_done

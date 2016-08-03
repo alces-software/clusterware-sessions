@@ -22,4 +22,32 @@ install:
   el6: |
     echo "Sorry, the Cinnamon Desktop Environment is not currently available in EL6 distributions."
     exit 1
-    
+  ubuntu1604: |
+    require distro
+    if distro_is_repository_permitted cinnamon; then
+      if ! distro_repository_exists cinnamon; then
+        cat <<\REPO > "${cw_ROOT}"/etc/distro/repos/cinnamon.sh
+    #!/bin/bash
+    ppa="ppa:embrosyn/cinnamon"
+    repo="deb http://ppa.launchpad.net/embrosyn/cinnamon/ubuntu xenial main"
+    if [ "$1" == "enable" ]; then
+      shopt -s nullglob
+      if ! grep -qFx "${repo}" /etc/apt/sources.list /etc/apt/sources.list.d/*; then
+        add-apt-repository -u -y "${ppa}"
+      fi
+    else
+      add-apt-repository -r -y "${ppa}"
+    fi
+    REPO
+        chmod 755 "${cw_ROOT}"/etc/distro/repos/cinnamon.sh
+      fi
+      if distro_enable_repository cinnamon; then
+        apt-get install -y cinnamon evince
+      else
+        echo "Sorry, the Cinnamon repository is not available."
+        exit 1
+      fi
+    else
+      echo "Sorry, the Cinnamon repository is prohibited."
+      exit 1
+    fi

@@ -36,7 +36,7 @@ install:
       fi
       if distro_enable_repository trinity; then
         yum install -y ftp://ftp.pbone.net/mirror/atrpms.net/el7-x86_64/atrpms/stable/libmad0-0.15.1b-4.el7.x86_64.rpm
-        yum install -y trinity-tdebase
+        yum install -y trinity-tdebase evince
       else
         echo "Sorry, the Trinity repository is not available."
         exit 1
@@ -71,7 +71,39 @@ install:
       fi
       if distro_enable_repository trinity; then
         yum install -y ftp://ftp.pbone.net/mirror/atrpms.net/el6-x86_64/atrpms/stable/libmad0-0.15.1b-4.el6.x86_64.rpm
-        yum install -y trinity-tdebase
+        yum install -y trinity-tdebase evince
+      else
+        echo "Sorry, the Trinity repository is not available."
+        exit 1
+      fi
+    else
+      echo "Sorry, the Trinity repository is prohibited."
+      exit 1
+    fi
+  ubuntu1604: |
+    require distro
+    if distro_is_repository_permitted trinity; then
+      if ! distro_repository_exists trinity; then
+        cat <<\REPO > "${cw_ROOT}"/etc/distro/repos/trinity.sh
+    #!/bin/bash
+    repo="deb http://mirror.ppa.trinitydesktop.org/trinity/trinity-r14.0.0/ubuntu xenial main"
+    repo2="deb http://mirror.ppa.trinitydesktop.org/trinity/trinity-builddeps-r14.0.0/ubuntu xenial main"
+    if [ "$1" == "enable" ]; then
+      shopt -s nullglob
+      if ! grep -qFx "${repo}" /etc/apt/sources.list /etc/apt/sources.list.d/*; then
+        apt-key adv --keyserver keyserver.quickbuild.pearsoncomputing.net --recv-keys F5CFC95C
+        add-apt-repository -u -y "${repo}"
+        add-apt-repository -u -y "${repo2}"
+      fi
+    else
+      add-apt-repository -r -y "${repo}"
+      add-apt-repository -r -y "${repo2}"
+    fi
+    REPO
+        chmod 755 "${cw_ROOT}"/etc/distro/repos/trinity.sh
+      fi
+      if distro_enable_repository trinity; then
+        apt-get install -y --no-install-recommends kubuntu-default-settings-trinity kubuntu-desktop-trinity evince
       else
         echo "Sorry, the Trinity repository is not available."
         exit 1

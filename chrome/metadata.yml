@@ -46,3 +46,32 @@ install:
   el6: |
     echo "Sorry, the Google Chrome Browser session is not currently available in EL6 distributions as Google Chrome support for EL6 has been discontinued."
     exit 1
+  ubuntu1604: |
+    require distro
+    if distro_is_repository_permitted google-chrome; then
+      if ! distro_repository_exists google-chrome; then
+        cat <<\REPO > "${cw_ROOT}"/etc/distro/repos/google-chrome.sh
+    #!/bin/bash
+    repo="deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main"
+    if [ "$1" == "enable" ]; then
+      shopt -s nullglob
+      if ! grep -qFx "${repo}" /etc/apt/sources.list /etc/apt/sources.list.d/*; then
+        wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | apt-key add -
+        add-apt-repository -u -y "${repo}"
+      fi
+    else
+      add-apt-repository -r -y "${repo}"
+    fi
+    REPO
+        chmod 755 "${cw_ROOT}"/etc/distro/repos/google-chrome.sh
+      fi
+      if distro_enable_repository google-chrome; then
+        apt-get install -y google-chrome-stable
+      else
+        echo "Sorry, the Google Chrome repository is not available."
+        exit 1
+      fi
+    else
+      echo "Sorry, the Google Chrome repository is prohibited."
+      exit 1
+    fi
