@@ -26,13 +26,13 @@ install:
     fi
   el7: |
     yum -e0 -y groupinstall 'X Window System' 'Fonts' 'GNOME'
-    yum -e0 -y install evince
+    yum -e0 -y install evince firefox
     yum -e0 -y remove gnome-packagekit
     policy_group=wheel
   el6: |
     yum -e0 -y groupinstall 'X Window System' 'Fonts' 'Desktop' 'Desktop Platform'
-    yum -e0 -y install evince
+    yum -e0 -y install evince firefox
     yum -e0 -y remove gnome-packagekit
   ubuntu1604: |
-    apt-get install -y --no-install-recommends gnome-core evince
+    apt-get install -y --no-install-recommends gnome-core evince firefox
     policy_group=sudo
